@@ -1,7 +1,7 @@
 # Matlab OpenSim scripts
 
-MATLAB sripts to manipulate OpenSim models, for example for plotting moment arms against joint angles, editing model parameters etc. Also some scripts demonstrating basic modelling principles or useful modelling utilities.
+A selection of examlpe scripts for:
 
-Future Goals:
-Create MATLAB file with matrix of all moment arms for all configurations of joint angle
-
+- manipulating OpenSim models, for example for plotting moment arms against joint angles, editing model parameters etc. 
+- demonstrating basic modelling principles or useful modelling utilities.
+- other useful Matlab scripts to get started with EMG or other signal processing.

@@ -1,3 +1,6 @@
+% Script to demonstrate windowed RMS processing of EMG data. Makre sure you 
+% also download 'emgdata.mat' to run this.
+
 % Read in EMG raw data
 
 load('emgdata.mat', 'emgdata')

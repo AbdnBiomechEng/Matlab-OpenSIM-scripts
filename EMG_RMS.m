@@ -1,4 +1,4 @@
-% Script to demonstrate windowed RMS processing of EMG data. Makre sure you 
+% Script to demonstrate windowed RMS processing of EMG data. Make sure you 
 % also download 'emgdata.mat' to run this.
 
 % Read in EMG raw data
@@ -26,9 +26,12 @@ for i = window+1:rows
     RMSdata(i-window,:) = rms(emgdet(i-window:i,:));
 end
 
+% Add snippet to normalise signals here
+
 % Plot raw (actually detrended) EMG data against windowed RMS (play with
 % colours to make this more readable)
 
+figure;
 plot(emgdet(window+1:rows,:)); hold on
 plot(RMSdata, 'LineWidth', 2)
 

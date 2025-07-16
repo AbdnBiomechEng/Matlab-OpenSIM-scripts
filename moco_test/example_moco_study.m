@@ -57,6 +57,9 @@ solver = study.initCasADiSolver();
 % Solve the problem on a grid of 50 mesh intervals.
 solver.set_num_mesh_intervals(20);
 
+% Specify initial guess
+solver.setGuessFile('initialguess.sto');
+
 % Solve! Use track.solve() to skip visualizing.
 solution = study.solve();
 

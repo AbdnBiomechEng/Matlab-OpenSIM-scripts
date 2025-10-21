@@ -63,14 +63,13 @@ problem.addGoal(MocoControlGoal('effort', 1.5));
 % Add final time goal
 problem.addGoal(MocoFinalTimeGoal('weight', 1.0));
 
-% Minimise dF/dt (~jerk)
-solver.set_minimize_implicit_auxiliary_derivatives(true);
-solver.set_implicit_auxiliary_derivatives_weight(0.001);
-
-
 % Initialize the CasADi or Tropter solver.
 solver = study.initCasADiSolver();
 % alternative: solver = study.initTropterSolver();
+
+% Minimise dF/dt (~jerk)
+solver.set_minimize_implicit_auxiliary_derivatives(true);
+solver.set_implicit_auxiliary_derivatives_weight(0.001);
 
 % Solve the problem on a grid of n mesh intervals.
 solver.set_num_mesh_intervals(30);

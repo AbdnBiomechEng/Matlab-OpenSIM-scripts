@@ -39,6 +39,16 @@ problem.setModelProcessor(modelProcessor);
 % Add CoordinateActuators to the model degrees-of-freedom.
 modelProcessor.append(ModOpAddReserves(250, 1.0));
 
+% Simulate assistive device
+device = SpringGeneralizedForce('r_elbow_flex');
+device.setStiffness(0.1);
+device.setRestLength(deg2rad(90));
+device.setViscosity(0);
+model.addForce(device);
+
+% Update the problem with the new model.
+problem.setModel(model);
+
 % Set initial time to 0; final time to 1
 problem.setTimeBounds(MocoInitialBounds(0),...
 MocoFinalBounds(0, 1));
@@ -46,9 +56,9 @@ MocoFinalBounds(0, 1));
 % The coordinate value must be between -π and π over the phase,
 % and its initial value is 0 and its final value is π/2.
 problem.setStateInfo('/jointset/r_shoulder/r_shoulder_elev/value',...
-[deg2rad(-10), deg2rad(80)], deg2rad(0), deg2rad(60));
+[deg2rad(-10), deg2rad(80)], deg2rad(0), deg2rad(0));
 problem.setStateInfo('/jointset/r_elbow/r_elbow_flex/value',...
-[deg2rad(0), deg2rad(130)], deg2rad(0), deg2rad(100));
+[deg2rad(0), deg2rad(130)], deg2rad(0), deg2rad(90));
 
 
 % Start and end velocities should be zero
@@ -57,11 +67,10 @@ problem.setStateInfo('/jointset/r_shoulder/r_shoulder_elev/speed',...
 problem.setStateInfo('/jointset/r_elbow/r_elbow_flex/speed',...
 [-50, 50], 0, 0);
 
-
 % Minimize the sum of squared controls with weight 1.5.
-problem.addGoal(MocoControlGoal('effort', 1.5));
+problem.addGoal(MocoControlGoal('effort', 10));
 % Add final time goal
-problem.addGoal(MocoFinalTimeGoal('weight', 1.0));
+problem.addGoal(MocoFinalTimeGoal('weight', 1));
 
 % Initialize the CasADi or Tropter solver.
 solver = study.initCasADiSolver();
@@ -72,7 +81,7 @@ solver.set_minimize_implicit_auxiliary_derivatives(true);
 solver.set_implicit_auxiliary_derivatives_weight(0.001);
 
 % Solve the problem on a grid of n mesh intervals.
-solver.set_num_mesh_intervals(30);
+solver.set_num_mesh_intervals(20);
 
 % Specify initial guess
 % Can use guess function, a previous solve with no goal, or a previous
@@ -92,7 +101,7 @@ solution = study.solve();
 
 try
     study.visualize(solution);
-    solution.write('arm26_MocoStudy_optimal.sto');
+    solution.write('arm26_MocoStudy_optimal_assist.sto');
 catch
     disp('did not solve')
 end
